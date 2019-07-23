@@ -164,7 +164,7 @@ def adjust_displacement(n_trials, n_accept, max_displacement):
 
     return max_displacement, n_trials, n_accept
 
-def plot_frame(coordinates, coordinates):
+def plot_frame(coordinates, box_length):
     ax = plt.axes(projection='3d')
     ax.set_xlim([-box_length/2, box_length/2])
     ax.set_ylim([-box_length/2, box_length/2])
@@ -187,6 +187,7 @@ def main():
     simulation_cutoff = 3.0
     max_displacement = 0.1
     tune_displacement = True
+    plot = True
     build_method = 'random'
 
     box_length = np.cbrt(num_particles / reduced_density)
@@ -243,6 +244,9 @@ def main():
 
             if tune_displacement:
                 max_displacement, n_trials, n_accept = adjust_displacement(n_trials, n_accept, max_displacement)
+            
+            if plot:
+                plot_frame(coordinates, box_length)
 
 
     #plt.plot(energy_array[100:], 'o')
