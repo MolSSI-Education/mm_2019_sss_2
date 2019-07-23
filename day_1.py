@@ -13,7 +13,7 @@ def generate_initial_state(method='random', file_name=None, num_particles=None, 
     elif method is 'file':
 
         coordinates = np.loadtxt(file_name, skiprows=2, usecols=(1,2,3))
-    
+
     return coordinates
 
 
@@ -50,7 +50,7 @@ def calculate_tail_correction(box_length, cutoff, number_particles):
     e_correction = sig_by_cutoff9 - 3.0 * sig_by_cutoff3
 
     e_correction *= 8.0 / 9.0 * np.pi * number_particles / volume * number_particles
- 
+
     return e_correction
 
 def minimum_image_distance(r_i, r_j, box_length):
@@ -62,7 +62,7 @@ def minimum_image_distance(r_i, r_j, box_length):
     return rij2
 
 def get_particle_energy(coordinates, box_length, i_particle, cutoff2):
-    
+
     """
     This function computes the minimum image distance between two particles
 
@@ -73,7 +73,7 @@ def get_particle_energy(coordinates, box_length, i_particle, cutoff2):
     r_j: list/array
         the potitional vection of the particle j
     box_length : float/int
-        length of simulation box 
+        length of simulation box
 
     Return
     ------
@@ -91,7 +91,7 @@ def get_particle_energy(coordinates, box_length, i_particle, cutoff2):
     for j_particle in range(particle_count):
 
         if i_particle != j_particle:
-            
+
             j_position = coordinates[j_particle]
 
             rij2 = minimum_image_distance(i_position, j_position, box_length)
@@ -119,6 +119,23 @@ def calculate_total_pair_energy(coordinates, box_length, cutoff2):
     return e_total
 
 def accept_or_reject(delta_e, beta):
+     """Accept or reject a move based on the energy difference and system \
+     temperature.
+
+     This function uses a random numbers to adjust the acceptance criteria.
+
+     Parameters
+     ----------
+     delta_e : float
+        The difference between the proposed and current energies.
+     beta : float
+        The inverse value of the reduced temperature.
+
+     Returns
+     -------
+     accept : booleen
+        Either a "True" or "False" to determine whether to reject the trial.
+    """
     # This function accepts or reject a move given the
     # energy difference and system temperature
 
@@ -137,6 +154,32 @@ def accept_or_reject(delta_e, beta):
     return accept
 
 def adjust_displacement(n_trials, n_accept, max_displacement):
+        """Change the acceptance criteria to get the desired rate.
+
+    When the acceptance rate is too high, the maximum displacement is adjusted \
+     to be higher.
+    When the acceptance rate is too low, the maximum displacement is \
+     adjusted lower.
+
+    Parameters
+    ----------
+    n_trials : integer
+        The number of trials that have been performed when the function is \
+         initiated.
+    n_accept : integer
+        The current number of accepted trials when the function is initiated.
+    max_displacement : float
+        The specified maximum value for the displacement of the trial.
+
+    Returns
+    -------
+    max_displacement : float
+        The adjusted displacement based on the acceptance rate.
+    n_trials : integer, 0
+        The new number of trials.
+    n_accept : integer, 0
+        The new number of trials.
+    """
     acc_rate = float(n_accept) / float(n_trials)
     if (acc_rate < 0.38):
         max_displacement *= 0.8
