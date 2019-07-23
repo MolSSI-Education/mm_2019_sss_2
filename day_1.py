@@ -25,7 +25,24 @@ def lennard_jones_potential(rij2):
     return 4.0 * (sig_by_r12 - sig_by_r6)
 
 def calculate_tail_correction(box_length, cutoff, number_particles):
-    # This function computes the standard tail energy correction for the LJ potential
+    """
+    This function computes the standard tail energy correction for the LJ potential
+
+    Parameters
+    ----------
+    box_length : float/int
+        length of simulation box
+    cutoff: float/int
+        the cutoff for the tail energy truncation
+    num_particles: int
+        number of particles
+
+    Return
+    ------
+    e_correction: float
+        tail correction of energy
+    """
+
 
     volume = np.power(box_length, 3)
     sig_by_cutoff3 = np.power(1.0 / cutoff, 3)
@@ -45,8 +62,25 @@ def minimum_image_distance(r_i, r_j, box_length):
     return rij2
 
 def get_particle_energy(coordinates, box_length, i_particle, cutoff2):
-    #This function computes the energy of a particle with
-    #the rest of the system
+    
+    """
+    This function computes the minimum image distance between two particles
+
+    Parameters
+    ----------
+    r_i: list/array
+        the potitional vection of the particle i
+    r_j: list/array
+        the potitional vection of the particle j
+    box_length : float/int
+        length of simulation box 
+
+    Return
+    ------
+    rij2: float
+        the square of the shortest distance between the two particles and their images
+    """
+
 
     e_total = 0.0
 
