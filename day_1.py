@@ -164,6 +164,14 @@ def adjust_displacement(n_trials, n_accept, max_displacement):
 
     return max_displacement, n_trials, n_accept
 
+def plot_frame(coordinates, coordinates):
+    ax = plt.axes(projection='3d')
+    ax.set_xlim([-box_length/2, box_length/2])
+    ax.set_ylim([-box_length/2, box_length/2])
+    ax.set_zlim([-box_length/2, box_length/2])
+    ax.plot3D(coordinates[:, 0], coordinates[:, 1], coordinates[:, 2], 'o')
+    plt.pause(0.05)
+
 
 
 def main():
@@ -247,3 +255,6 @@ def main():
     #ax = plt.axes(projection='3d')
     #ax.plot3D(coordinates[:,0], coordinates[:,1], coordinates[:,2], 'o')
     #plt.show()
+
+if __name__ == "__main__":
+    main()
