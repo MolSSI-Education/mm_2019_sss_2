@@ -3,15 +3,13 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 def generate_initial_state(method='random', file_name=None, num_particles=None, box_length=None):
-    """
-    Function generates initial coordinates for a LJ fluid simulation
+    """Function generates initial coordinates for a LJ fluid simulation
 
-    This function can generate coordintes either from a file (NIST LJ Fluid Configurations) or from
-    a random configuration
+    This function can read coordinates either from a file (NIST LJ Fluid Configurations) or generates
+    a random configuration.
 
     Parameters
     ----------
-
     method : str
         String the method to use to build the initial configuration for the LJ fluid simulation. Possible values are 'random'  or 'file' (Default value is 'random')
     file_name : str
@@ -23,13 +21,11 @@ def generate_initial_state(method='random', file_name=None, num_particles=None, 
 
     Returns
     -------
-
-    coordinates : np.array
+    coordinates : array_like
         A (num_particles x 3) numpy array containing the coordinates of each LJ particle.
 
     Examples
     --------
-
     >>> generate_initial_state('random', num_particles = 1000, box_length = 20)
     array([[ 1.10202674,  4.24975121, -5.03322129],
         [ 9.13676284,  4.78807621, -8.26008762],
@@ -39,7 +35,6 @@ def generate_initial_state(method='random', file_name=None, num_particles=None, 
         [ 1.3302019 , -3.4160087 , -1.34698966],
         [ 0.56410479, -1.2309513 ,  4.71009776]])
     """
-
 
     if method is 'random':
 
@@ -53,8 +48,7 @@ def generate_initial_state(method='random', file_name=None, num_particles=None, 
 
 
 def lennard_jones_potential(rij2):
-    """
-    Function evaluates the unitless LJ potential given a squared distance
+    """Function evaluates the unitless LJ potential given a squared distance
 
     Parameters
     ----------
@@ -63,19 +57,17 @@ def lennard_jones_potential(rij2):
 
     Returns
     -------
-
-    float
+    value : float
         Unitless LJ potential energy
     """
-    # This function computes the LJ energy between two particles
 
     sig_by_r6 = np.power(1 / rij2, 3)
     sig_by_r12 = np.power(sig_by_r6, 2)
+
     return 4.0 * (sig_by_r12 - sig_by_r6)
 
 def calculate_tail_correction(box_length, cutoff, number_particles):
-    """
-    This function computes the standard tail energy correction for the LJ potential
+    """This function computes the standard tail energy correction for the LJ potential
 
     Parameters
     ----------
@@ -86,12 +78,11 @@ def calculate_tail_correction(box_length, cutoff, number_particles):
     num_particles: int
         number of particles
 
-    Return
-    ------
+    Returns
+    ------_
     e_correction: float
         tail correction of energy
     """
-
 
     volume = np.power(box_length, 3)
     sig_by_cutoff3 = np.power(1.0 / cutoff, 3)
@@ -112,8 +103,7 @@ def minimum_image_distance(r_i, r_j, box_length):
 
 def get_particle_energy(coordinates, box_length, i_particle, cutoff2):
 
-    """
-    This function computes the minimum image distance between two particles
+    """This function computes the minimum image distance between two particles
 
     Parameters
     ----------
@@ -124,12 +114,11 @@ def get_particle_energy(coordinates, box_length, i_particle, cutoff2):
     box_length : float/int
         length of simulation box
 
-    Return
-    ------
+    Returns
+    ------_
     rij2: float
         the square of the shortest distance between the two particles and their images
     """
-
 
     e_total = 0.0
 
@@ -173,6 +162,7 @@ def calculate_total_pair_energy(coordinates, box_length, cutoff2):
     e_total : float
         The sum of all pairwise VDW energy between each pair of particles in the system. 
     """
+
     e_total = 0.0
     particle_count = len(coordinates)
 
@@ -192,13 +182,7 @@ def accept_or_reject(delta_e, beta):
     """Accept or reject a move based on the energy difference and system \
      temperature.
 
-
-
-
-     This function uses a random numbers to adjust the acceptance criteria.
-
-
-
+    This function uses a random numbers to adjust the acceptance criteria.
 
      Parameters
      ----------
@@ -207,23 +191,11 @@ def accept_or_reject(delta_e, beta):
      beta : float
         The inverse value of the reduced temperature.
 
-
-
-
      Returns
      -------
      accept : booleen
         Either a "True" or "False" to determine whether to reject the trial.
-
-
-
-
     """
-    # This function accepts or reject a move given the
-    # energy difference and system temperature
-
-
-
 
     if delta_e < 0.0:
         accept = True
