@@ -4,8 +4,21 @@ import os
 
 class System:
 
-	def __init__(self, method='random', num_particles=None, box_length=None, \
-	 filename=None):
+
+	def __init__(self, method='random', num_particles=20, box_length=3.0, filename=None):
+	"""This is a class object that initializes a system for your Monte Carlo calculation.
+	
+	Parameters
+	----------
+	method : str
+		The method is either 'random' or 'file'. By default the method is set to 'random'.
+	num_particles : int
+		The number of particles should be defined as an integer value. By default the value is 20.
+	box_length : float
+		The box is assumed to be cubic. By default the value is set to 3.0 Angstroms.
+	filename : str
+		The file name if the method is set to file.
+	"""
 		self.method = method
 
 		if self.method == 'random':
