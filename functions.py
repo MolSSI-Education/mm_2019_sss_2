@@ -2,27 +2,34 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-def generate_initial_state(method='random', file_name=None, num_particles=None, box_length=None):
+def generate_initial_state(method='random', file_name=None, num_particles=None, \
+ box_length=None):
     """Function generates initial coordinates for a LJ fluid simulation
 
-    This function can read coordinates either from a file (NIST LJ Fluid Configurations) or generates
+    This function can read coordinates either from a file (NIST LJ Fluid \
+     Configurations) or generates
     a random configuration.
 
     Parameters
     ----------
     method : str
-        String the method to use to build the initial configuration for the LJ fluid simulation. Possible values are 'random'  or 'file' (Default value is 'random')
+        String the method to use to build the initial configuration for the LJ \
+         fluid simulation. Possible values are 'random'  or 'file' (Default \
+          value is 'random')
     file_name : str
-        String of the the filename containing the initial starting coordinates. Only required when using the 'fille' method (Default value = None)
+        String of the the filename containing the initial starting coordinates. \
+         Only required when using the 'fille' method (Default value = None)
     num_particles : int
-        Number of particules to use when populating the simualtion box with the 'random' method (Default value = None)
+        Number of particules to use when populating the simualtion box with the \
+         'random' method (Default value = None)
     box_length : float
         Size of one vertices of the simulation box. (Default value = None)
 
     Returns
     -------
     coordinates : array_like
-        A (num_particles x 3) numpy array containing the coordinates of each LJ particle.
+        A (num_particles x 3) numpy array containing the coordinates of each \
+         LJ particle.
 
     Examples
     --------
@@ -67,7 +74,8 @@ def lennard_jones_potential(rij2):
     return 4.0 * (sig_by_r12 - sig_by_r6)
 
 def calculate_tail_correction(box_length, cutoff, number_particles):
-    """This function computes the standard tail energy correction for the LJ potential
+    """This function computes the standard tail energy correction for the LJ \
+     potential
 
     Parameters
     ----------
@@ -89,7 +97,8 @@ def calculate_tail_correction(box_length, cutoff, number_particles):
     sig_by_cutoff9 = np.power(sig_by_cutoff3, 3)
     e_correction = sig_by_cutoff9 - 3.0 * sig_by_cutoff3
 
-    e_correction *= 8.0 / 9.0 * np.pi * number_particles / volume * number_particles
+    e_correction *= 8.0 / 9.0 * np.pi * number_particles / volume * \
+     number_particles
 
     return e_correction
 
@@ -117,7 +126,8 @@ def get_particle_energy(coordinates, box_length, i_particle, cutoff2):
     Returns
     ------_
     rij2: float
-        the square of the shortest distance between the two particles and their images
+        the square of the shortest distance between the two particles and their \
+         images
     """
 
     e_total = 0.0
@@ -142,25 +152,26 @@ def get_particle_energy(coordinates, box_length, i_particle, cutoff2):
 
 
 def calculate_total_pair_energy(coordinates, box_length, cutoff2):
-    """This function computes the sum of all pairwise VDW energy between each pair of
-       particles in the system.
+    """This function computes the sum of all pairwise VDW energy between each \
+     pair of particles in the system.
 
     Parameters
     ----------
     coordinates : np.array
-        An array of atomic coordinates. Size should be (n, 3) where n is the 
-        number of particles.
+        An array of atomic coordinates. Size should be (n, 3) where n is the \
+         number of particles.
     box_length : float
-        A float indicating the size of the simulation box. Can be either hard-coded 
-        or calculated using num_particles and reduced_density.
+        A float indicating the size of the simulation box. Can be either \
+         hard-coded or calculated using num_particles and reduced_density.
     cutoff2: float
-        The square of the simulation_cutoff, which is the cutoff distance between 
-        two interacting particles.
+        The square of the simulation_cutoff, which is the cutoff distance \
+         between two interacting particles.
 
     Returns
     -------
     e_total : float
-        The sum of all pairwise VDW energy between each pair of particles in the system. 
+        The sum of all pairwise VDW energy between each pair of particles in \
+         the system.
     """
 
     e_total = 0.0
@@ -200,42 +211,25 @@ def accept_or_reject(delta_e, beta):
     if delta_e < 0.0:
         accept = True
 
-
-
-
     else:
         random_number = np.random.rand(1)
         p_acc = np.exp(-beta * delta_e)
-
-
-
 
         if random_number < p_acc:
             accept = True
         else:
             accept = False
 
-
-
-
     return accept
-
-
 
 
 def adjust_displacement(n_trials, n_accept, max_displacement):
     """Change the acceptance criteria to get the desired rate.
 
-
-
-
     When the acceptance rate is too high, the maximum displacement is adjusted \
      to be higher.
     When the acceptance rate is too low, the maximum displacement is \
      adjusted lower.
-
-
-
 
     Parameters
     ----------
@@ -247,9 +241,6 @@ def adjust_displacement(n_trials, n_accept, max_displacement):
     max_displacement : float
         The specified maximum value for the displacement of the trial.
 
-
-
-
     Returns
     -------
     max_displacement : float
@@ -258,29 +249,15 @@ def adjust_displacement(n_trials, n_accept, max_displacement):
         The new number of trials.
     n_accept : integer, 0
         The new number of trials.
-
-
-
-
     """
     acc_rate = float(n_accept) / float(n_trials)
     if (acc_rate < 0.38):
         max_displacement *= 0.8
 
-
-
-
     elif (acc_rate > 0.42):
         max_displacement *= 1.2
-
-
-
 
     n_trials = 0
     n_accept = 0
 
-
-
-
     return max_displacement, n_trials, n_accept
-
