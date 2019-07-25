@@ -27,7 +27,7 @@ class System:
 			try:
 				self._read_info_from_file_(filename)
 			except FileNotFoundError:
-				print('Either you entered the incorrect file or the file was not found.')
+			    print('Either you entered the incorrect file or the file was not found.')
 				print('Initializing a Monte Carlo simulation with: ')
 				print(f'Number of particles: {num_particles}')
 				print(f'Box length: {box_length} Angstroms')
