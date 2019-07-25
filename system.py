@@ -21,23 +21,25 @@ class System:
 		self.method = method
 
 		if self.method == 'random':
-			self.n_particles = num_particles
-			self.coordinates = (0.5 - np.random.rand(num_particles, 3)) * box_length
+			self._initialize_random_simulation_(box_length, num_particles)
 
 		elif self.method == 'file':
 			try:
-				self.coordinates, self.n_particles = self._read_info_from_file_(filename)
+				self._read_info_from_file_(filename)
 			except FileNotFoundError:
-				print('Incorrect file or the file was not found.')
-				print('Continuing with a random box for this Monte Carlo simulation')
-				self.n_particles = num_particles
-				self.coordinates = (0.5 - np.random.rand(num_particles, 3)) * box_length
+				print('Either you entered the incorrect file or the file was not found.')
+				print('Initializing a Monte Carlo simulation with: ')
+				print(f'Number of particles: {num_particles}')
+				print(f'Box length: {box_length} Angstroms')
+				self._initialize_random_simulation_(box_length, num_particles)
 
 		else:
 			raise TypeError('You are using a method that is not supported at  this moment.')
 
 	def _read_info_from_file_(self, filename):
-		coordinates = np.loadtxt(filename, skiprows=2, usecols=(1, 2, 3))
-		num_particles = len(coordinates)
+		self.coordinates = np.loadtxt(filename, skiprows=2, usecols=(1, 2, 3))
+		self.n_particles = len(self.coordinates)
 
-		return coordinates, num_particles
+	def _initialize_random_simulation_(self, box_length, num_particles):
+		self.n_particles = num_particles
+		self.coordinates = (0.5 - np.random.rand(num_particles, 3)) * box_length
