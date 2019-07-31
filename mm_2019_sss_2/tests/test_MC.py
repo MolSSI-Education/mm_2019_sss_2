@@ -8,8 +8,8 @@ import mm_2019_sss_2 as MM2
 
 import pytest
 
-MC_system = MM2.system.SystemSetup
-MC_energy = MM2.energy.Energy
+MC_system = MM2.system.SystemSetup()
+MC_energy = MM2.energy.Energy()
 test_MC = MM2.monte_carlo.MonteCarlo(MC_system, MC_energy)
 
 @pytest.mark.parametrize("delta_e, beta, expected", [
