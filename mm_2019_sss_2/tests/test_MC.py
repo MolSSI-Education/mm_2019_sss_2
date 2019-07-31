@@ -44,7 +44,7 @@ def test_adjust_displacement(n_trials, n_accept, max_displacement, expected):
     calculated = my_MC.adjust_displacement(n_trials, n_accept, max_displacement)
     assert expected == calculated
 
-def test_run_simulation
+#def test_run_simulation
 
 
 
